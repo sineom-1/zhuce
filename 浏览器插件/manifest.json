@@ -1,0 +1,53 @@
+{
+  "name": "CursorX",
+  "version": "1.0.1",
+  "manifest_version": 3,
+  "description": "自助上车，无限使用",
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  },
+  "permissions": [
+    "activeTab",
+    "storage",
+    "webNavigation",
+    "tabs",
+    "scripting",
+    "windows"
+  ],
+  "host_permissions": [
+    "http://192.168.21.122:8080/*",
+    "http://localhost:8080/*",
+    "http://127.0.0.1:8080/*",
+    "https://tls.browserleaks.com/*",
+    "https://*.cursor.com/*",
+    "https://*.cursor.sh/*",
+    "https://cursor.sh/*",
+    "https://cursor.idfairy.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.cursor.com/*", "https://*.cursor.sh/*", "https://cursor.sh/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; connect-src 'self' http://192.168.21.122:8080 http://localhost:8080 http://127.0.0.1:8080 https://cursor.idfairy.com https://*.cursor.com https://cursor.com https://authenticator.cursor.sh https://tls.browserleaks.com;"
+  },
+  "web_accessible_resources": [{
+    "resources": ["popup.html", "images/*"],
+    "matches": ["<all_urls>"]
+  }]
+} 
