@@ -1,0 +1,66 @@
+import base64
+import imaplib
+import poplib
+import requests
+
+def get_access_token(client_id, refresh_token):
+    data = {
+        'client_id': client_id,
+        'grant_type': 'refresh_token',
+        'refresh_token': refresh_token
+    }
+    ret = requests.post('https://login.live.com/oauth20_token.srf', data=data)
+
+    # 打印响应内容和访问令牌
+    print(ret.text)
+    print(ret.json()['access_token'])
+    return ret.json()['access_token']
+
+# 使用访问令牌生成OAuth2认证字符串
+def generate_auth_string(user, token):
+    auth_string = f"user={user}\1auth=Bearer {token}\1\1"
+    return auth_string
+
+pop3_server = 'outlook.office365.com'
+pop3_port = 995  # 使用SSL的POP3
+
+def connect_pop3(email, access_token):
+    server = poplib.POP3_SSL(pop3_server, pop3_port)
+    # 使用OAuth2进行认证
+    auth_string = generate_auth_string(email, access_token)
+    encoded_auth_string = base64.b64encode(auth_string.encode("utf-8")).decode("utf-8")
+    server._shortcmd(f'AUTH XOAUTH2')
+    server._shortcmd(f'{encoded_auth_string}')
+
+    # 获取邮件列表
+    num_messages = len(server.list()[1])
+    print(f"邮箱中有 {num_messages} 封邮件。")
+
+    # 获取邮件内容
+    for i in range(num_messages):
+        response, lines, octets = server.retr(i + 1)
+        msg_content = b"\n".join(lines).decode("utf-8")
+        print(f"邮件 {i + 1}:")
+        print(msg_content)
+        print("=" * 50)
+
+def connect_imap(email, access_token):
+    mail = imaplib.IMAP4_SSL('outlook.office365.com')
+    # 打印生成的认证字符串
+    print(generate_auth_string(email, access_token))
+    mail.authenticate('XOAUTH2', lambda x: generate_auth_string(email, access_token))
+    mail.select("INBOX")
+    status, messages = mail.search(None, 'ALL')
+    print("邮件ID:", messages)
+    mail.logout()
+
+# 设置电子邮件地址和刷新令牌
+client_id = '8b4ba9dd-3ea5-4e5f-86f1-ddba2230dcf2'
+email = "ge401y1x4nht4@hotmail.com"
+t = "M.C535_BAY.0.U.-Ctpc7CwTn4zkC3SJMtCG!ypz9FXvV9OJqYs54lOgU5rS!GnzBxyZRo8SqL13LZ13hU7xTc!ZzclJACeEilFJJrDdvssFTaVHajo1Tm59BEW2Re5nCIZHTRI9dljnoJiROXmDudr7o!FyFMtiDXDfdeIdzdVchPPGEZl73WOMKgB3XyCiU**lmeYkzHqwq5pUR6cZEIgnVufypBuMyIb94kESLieQaL4LYALOU5UjzIkT0ZWwkt8rqg6Y39jCjA0rVIGog627D4jHwAu62u88iu0t9c9*9ZTZY1E00yOf4Qr7vfU37tehqpA2meyACkSry!AQlMS6Bww0u1g2hNGJX42W0f1JPjSf22xCBjHVcz25Y2uVqi8rwj6oaJidNcQLdJbdGAa4BVh0Gvkl8I!8Suo$"
+
+# 使用刷新令牌获取访问令牌
+acc_token = get_access_token(client_id, t)
+
+# 连接到IMAP服务器并访问电子邮件
+connect_imap(email, acc_token)
