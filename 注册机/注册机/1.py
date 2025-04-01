@@ -196,7 +196,7 @@ def main():
 
 
 if __name__ == "__main__":
-    repeat_times = 2  # 注册次数
+    repeat_times = 1  # 注册次数
     for i in range(repeat_times):
         try:
             print(f"\n开始第 {i+1}/{repeat_times} 次注册")
