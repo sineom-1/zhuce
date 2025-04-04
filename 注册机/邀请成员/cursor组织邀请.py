@@ -1,8 +1,8 @@
 '''
 Author: sineom sineom@126.com
 Date: 2025-03-27 02:06:20
-LastEditors: sineom sineom@126.com
-LastEditTime: 2025-04-01 11:17:26
+LastEditors: error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
+LastEditTime: 2025-04-04 13:35:43
 FilePath: /邀请成员/cursor组织邀请.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -12,7 +12,7 @@ import json
 from tqdm import tqdm
 
 # 设置邀请代码
-invite_code = "e7ae60c8a9dd3e9090db8d9d16c5aad40ffcd8f041cf8826"
+invite_code = "f354fbde4590556da6d21811c6defcdeb6b116188006e31e"
 
 # 读取cookies.txt文件
 with open('cookies.txt', 'r') as file:
