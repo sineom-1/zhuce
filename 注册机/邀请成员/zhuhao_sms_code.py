@@ -1,3 +1,11 @@
+'''
+Author: sineom sineom@126.com
+Date: 2025-04-01 11:04:43
+LastEditors: sineom sineom@126.com
+LastEditTime: 2025-04-03 12:15:16
+FilePath: /邀请成员/zhuhao_sms_code.py
+Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+'''
 import base64
 import imaplib
 import poplib
@@ -55,9 +63,9 @@ def connect_imap(email, access_token):
     mail.logout()
 
 # 设置电子邮件地址和刷新令牌
-client_id = '9e5f94bc-e8a4-4e73-b8be-63364c29d753'
-email = "TracyMoore1973718@outlook.com"
-t = "M.C556_BAY.0.U.-CjFBNOZUrWO0zoB31lSy15Dk6lfwJH123oPhdSqiyrDGpA5!1!1ihMLkRTUvky*Z2sIHKlcr!2FvN!USfEHaKt9pymyn2bjvUvmylX7S8wPvmmiwaHGfg*!3kygSQnFU*Ebwqa6O1VDFpZjtoKVooHh4PsaF6kovLBxB2dnnreUBfVkCiL!92CtYmjTtXaLMp07u4gU9ZFJzy5z*6z9KZ0NCWyyVJpgwiBzHctLDRUYuRI9nNrC5wj4XlSJCzHV*CMkHYfR22IzSlYvXnD1SwVlpfWC!1uqpexVIcTSDsvQ1VeTMlFpxyYTkp2sf7bY2lrwum1GoAO39xphdCnBQyJYiBNCtL7xcRL1FkUEWEr4re6e!DdjPv*6DzMAkaWNC0o7fCMD9Kpb9R7PNCfSk4uY83uwZa2UvvKSH9rsqTWOm"
+client_id = '99e5f94bc-e8a4-4e73-b8be-63364c29d753'
+email = "KennethCollins2000115@outlook.com"
+t = "M.C501_BAY.0.U.-Ch9tWzp47qQ6DpuGovrBYXAp6wXwVlaluiXJP*DFes5hLkA90AS2V011kaz4RytdFp3*Fg!rqlNaeA3XguAMyQIHLX*gmoGiyGic2sXGSDKoZQceFh!Hw8pg0GCIYq3B1KrnuM960D38Gx0U5Kq4It!y!TmPeykv*WMWFULwuMSjSgHPDJbalmYZD3Kkj7IdqlmlirTvP8o1xl2OBgS5Cp5RF6oeTMlxvZWkDqrnNWyeQhjuceTlC8ySu6sWOiuldCiWrWRykhjqXoaSUYc6PjInObNsnsQbP2zpgTswwzuBrSXfcMMqyvSeEBMCNusnOrDYbWmcrojiTPAoHgFDlb1zkhZ86ACeSKm2W9p6bYXIe6*fU*W7MEd5QHENfMNCaad2PugdKzGzr1018tNqpdPjL8MrG7aX1oVqbzeP3R3s"
 
 # 使用刷新令牌获取访问令牌
 acc_token = get_access_token(client_id, t)
@@ -67,9 +75,9 @@ connect_imap(email, acc_token)
 
 
 # 运行主函数
-if __name__ == "__main__":
-    try:
-        connect_pop3(email=email,access_token="EwA4BOl3BAAUcDnR9grBJokeAHaUV8R3+rVHX+IAAbZ5YjbRIbfjyUsM9HcxZEXEYm6eJOts9xBuhsbC4Sh3ClY7E1sN3IiEt9NtJwHhteFB2yNX5owLfn3P2W/i15TN5fVszoq56kOxA8+WGGujkEndLopUzPQD7XCtPRl4b4Vz5d/DKrbTOjMZ2OBwVw+CV+lPGIGlHa9bNThoCoxAThGtS8WdrPP8FJBAUJt8jOcLwzYSKt2G+3n1SyIZh3p4xNFnPr8H7ay4qGBt13HjHrzOq6P0dVlO1vS86ctFsUeCbvPWlFnU95XSR8f0PTP9XuBko9NutbRKIQfS+I0JCzvn7sBOA1W9zzes/sbdkknZpHJkf6EsjsZH57sExX0QZgAAENIwbAyPrjLJNm4c5NYGSDEAA1Wb5RPlW74YCqu2+72L8XWuveKRA6iFiyFed5wFht7+n8yoqH/mAEjVy4z56VtUtH8zjvpLTETGZeltMNYLw6Wb/4s9hbw863Ldd1yOk+v4B/3Qx1iNFvC61RoLaJThMzCCzl7eTmIuX9Twm70+YNP7m/zQnbetmmxcMF/u/8TFX3UMUdF9n0/SXUumEq6Ai66bZXbz/jngnpXWhjX//CRnWhMKZPpSyIdtdldTq7oyVYV//B+yY4lPuUjrP4LozzYnkmduD+bfQs/bvlkhKe3iM4BbaflzV4+QPLiPWoFIrWClX55lWALIkHhW2SBawZL4iqiE4H6bMgAw1i770Kd1GzricLKnBAUReVxnNVSKVu5NPr0P5AbzEv5OeC76pS21tfy/IvFL7+VbVTOulhZTR6pXITfK+4e2at3ST0JaaclwYKeEk38BoEn+utPoMkJs27iwpIuWLmIq+YO3cqnaWByiwUlSVG6UYh8bf/RvkjapyiWpdPoFEuJlO8k1Nt3fmvEgcEkyqrcsMMFXodRnX/Ca6rLJSoFqE1+48Kq9lesEA//11sER5o3rejKKzCeV48OnTWRaPVM+ThtO7ZDqhyyj2qPJvIsAAj1FcOphMLfUZC0y5Qk4wFOF5hYSiCbtR3Zqkp3unl/lPprHFToepUsGLWzoPio0LrROJGVIQqF61dMhxYRLzrs61KGoqtjTy+DhzSGzdQRHArpdi8fIzJ5UJjRuDNHkTVw0+Q7j+EfDqGBBdh6NthC3r+nN2iBONtdnZWpuUQ0yLtaQrRk6CkuopO7l/bh50zDpOQZg07uXfyOH848BJrbR/IP3/0U2qHLAn8dADYirmuP6vpCq5Jy7Vd8nsoTRSCyne8S7W5r32x+bTInrN92dFtFp1dlU5YW/wFwbkKdKWxWBI9jzZUDsENwjCqeeWckHuHBMaJpa1eTDsQPgmvCPNdhvaOGCxzpPxiaTg1Ee0gT/nQO3MC+crxcB7MvV9ppHgYS/G5DIRR2AOiQxG/yUCysKUDUD")
-    except Exception as e:
-        print(f"发生错误: {e}")
+# if __name__ == "__main__":
+#     try:
+#         connect_pop3(email=email,access_token="EwA4BOl3BAAUcDnR9grBJokeAHaUV8R3+rVHX+IAAbZ5YjbRIbfjyUsM9HcxZEXEYm6eJOts9xBuhsbC4Sh3ClY7E1sN3IiEt9NtJwHhteFB2yNX5owLfn3P2W/i15TN5fVszoq56kOxA8+WGGujkEndLopUzPQD7XCtPRl4b4Vz5d/DKrbTOjMZ2OBwVw+CV+lPGIGlHa9bNThoCoxAThGtS8WdrPP8FJBAUJt8jOcLwzYSKt2G+3n1SyIZh3p4xNFnPr8H7ay4qGBt13HjHrzOq6P0dVlO1vS86ctFsUeCbvPWlFnU95XSR8f0PTP9XuBko9NutbRKIQfS+I0JCzvn7sBOA1W9zzes/sbdkknZpHJkf6EsjsZH57sExX0QZgAAENIwbAyPrjLJNm4c5NYGSDEAA1Wb5RPlW74YCqu2+72L8XWuveKRA6iFiyFed5wFht7+n8yoqH/mAEjVy4z56VtUtH8zjvpLTETGZeltMNYLw6Wb/4s9hbw863Ldd1yOk+v4B/3Qx1iNFvC61RoLaJThMzCCzl7eTmIuX9Twm70+YNP7m/zQnbetmmxcMF/u/8TFX3UMUdF9n0/SXUumEq6Ai66bZXbz/jngnpXWhjX//CRnWhMKZPpSyIdtdldTq7oyVYV//B+yY4lPuUjrP4LozzYnkmduD+bfQs/bvlkhKe3iM4BbaflzV4+QPLiPWoFIrWClX55lWALIkHhW2SBawZL4iqiE4H6bMgAw1i770Kd1GzricLKnBAUReVxnNVSKVu5NPr0P5AbzEv5OeC76pS21tfy/IvFL7+VbVTOulhZTR6pXITfK+4e2at3ST0JaaclwYKeEk38BoEn+utPoMkJs27iwpIuWLmIq+YO3cqnaWByiwUlSVG6UYh8bf/RvkjapyiWpdPoFEuJlO8k1Nt3fmvEgcEkyqrcsMMFXodRnX/Ca6rLJSoFqE1+48Kq9lesEA//11sER5o3rejKKzCeV48OnTWRaPVM+ThtO7ZDqhyyj2qPJvIsAAj1FcOphMLfUZC0y5Qk4wFOF5hYSiCbtR3Zqkp3unl/lPprHFToepUsGLWzoPio0LrROJGVIQqF61dMhxYRLzrs61KGoqtjTy+DhzSGzdQRHArpdi8fIzJ5UJjRuDNHkTVw0+Q7j+EfDqGBBdh6NthC3r+nN2iBONtdnZWpuUQ0yLtaQrRk6CkuopO7l/bh50zDpOQZg07uXfyOH848BJrbR/IP3/0U2qHLAn8dADYirmuP6vpCq5Jy7Vd8nsoTRSCyne8S7W5r32x+bTInrN92dFtFp1dlU5YW/wFwbkKdKWxWBI9jzZUDsENwjCqeeWckHuHBMaJpa1eTDsQPgmvCPNdhvaOGCxzpPxiaTg1Ee0gT/nQO3MC+crxcB7MvV9ppHgYS/G5DIRR2AOiQxG/yUCysKUDUD")
+#     except Exception as e:
+#         print(f"发生错误: {e}")
 

@@ -134,16 +134,31 @@ def main():
     # 配置信息
     sign_up_url = 'https://authenticator.cursor.sh'
     
+    # 初始化browser为None，以便在发生错误时可以检查
+    browser = None
+    
     try:
         with open('email.txt', 'r') as f:
             line = f.readline().strip()
             if not line:
                 print("email.txt 文件为空")
+                return
             # 解析邮箱、密码和token
-            live_email = line.split('----')[0]
-            live_password = line.split('----')[1]
-            live_token = line.split('----')[2]
-            live_client_id = line.split('----')[3]
+            parts = line.split('----')
+            if len(parts) < 3:
+                print("email.txt 格式错误，无法正确解析")
+                return
+            
+            live_email = parts[0]
+            live_password = parts[1]
+            live_token = parts[2]
+            
+            # 从token中提取client_id (user_id部分)
+            try:
+                live_client_id = live_token.split('::')[0]  # 提取user_开头的部分作为client_id
+            except:
+                live_client_id = "default_client_id"  # 默认值
+            
             # 删除已使用的账号
             with open('email.txt', 'r') as f:
                 lines = f.readlines()
@@ -157,7 +172,9 @@ def main():
         return
     except Exception as e:
         print(f"读取文件时发生错误: {str(e)}")
-        browser.quit()
+        # 确保如果browser已经创建，则关闭它
+        if browser is not None:
+            browser.quit()
         return
     
     # 浏览器配置
@@ -186,17 +203,20 @@ def main():
         else:
             print("账号注册失败")
             with open('email.txt', 'a', encoding='utf-8') as f:
-                f.write(f"{live_email}----{live_password}----{live_client_id}----{live_token}\n")
+                f.write(f"{live_email}----{live_password}----{live_token}\n")
     else:
         print("账号注册失败")
         with open('email.txt', 'a', encoding='utf-8') as f:
-            f.write(f"{live_email}----{live_password}----{live_client_id}----{live_token}\n")
+            f.write(f"{live_email}----{live_password}----{live_token}\n")
+        if browser is not None:
+            browser.quit()
+    
+    # 确保浏览器被关闭
+    if browser is not None:
         browser.quit()
-    browser.quit()    
-
 
 if __name__ == "__main__":
-    repeat_times = 1  # 注册次数
+    repeat_times = 4  # 注册次数
     for i in range(repeat_times):
         try:
             print(f"\n开始第 {i+1}/{repeat_times} 次注册")

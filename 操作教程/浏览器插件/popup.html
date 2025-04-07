@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>CursorX</title>
+  <style>
+    body {
+      font-family: "Microsoft YaHei", Arial, sans-serif;
+      width: 100%;
+      height: 100vh;
+      min-width: 260px;
+      min-height: 330px;
+      padding: 0;
+	    margin: 0;
+      background-color: #f8f9fa;
+      color: #333;
+      user-select: none;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      width: 220px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+	.success-container {
+		height: 100vh;
+		display: flex;
+		align-items: center;
+      text-align: center;
+    }
+    .logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo img {
+      width: 60px;
+      height: 60px;
+    }
+    h2 {
+      color: #000;
+      margin: 10px 0 10px 0;
+      font-size: 18px;
+    }
+    .input-group {
+      margin: 20px 0 15px 0;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 14px;
+      box-sizing: border-box;
+      height: 48px;
+    }
+    .btn {
+      background-color: #23ff00;
+      color: black;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+    }
+    .btn:hover {
+      background-color: #1ccc00;
+    }
+    .btn:disabled {
+      background-color: #a0ffa0;
+      cursor: not-allowed;
+      opacity: 0.6;
+      position: relative;
+    }
+    .btn:disabled::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      pointer-events: none;
+    }
+    .btn-spinner {
+      display: none;
+      width: 12px;
+      height: 12px;
+      border: 2px solid rgba(0, 0, 0, 0.3);
+      border-radius: 50%;
+      border-top-color: #000;
+      animation: spin 1s infinite linear;
+      margin-right: 8px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .status {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #e2e2e2;
+      text-align: center;
+      display: none;
+    }
+    #status-text {
+      margin: 5px 0;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <img src="images/icon128.png" alt="CursorX">
+      <h2>CursorX</h2>
+    </div>
+    
+    <form id="boarding-form" onsubmit="return false;">
+      <div class="input-group">
+        <input type="text" id="ticket" placeholder="输入车票">
+      </div>
+      
+      <button type="submit" id="submit-btn" class="btn">
+        <div id="btn-spinner" class="btn-spinner"></div>
+        <span id="btn-text">立即上车</span>
+      </button>
+    </form>
+    
+    <div class="status" id="status">
+      <p id="status-text"></p>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html> 
