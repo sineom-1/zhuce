@@ -55,6 +55,41 @@ def get_cursor_session_token(tab):
             break
     return cursor_session_token
 
+def get_verification_code(live_email, live_token, live_client_id, max_attempts=5):
+    """获取验证码，多次尝试"""
+    print("开始获取验证码")
+    code = None
+    
+    for attempt in range(max_attempts):
+        print(f"尝试 {attempt+1}/{max_attempts} 次获取验证码")
+        
+        # 先尝试从垃圾邮件获取
+        try:
+            code = get_Junk_code(live_email, live_token, live_client_id)
+            if code:
+                print(f"从垃圾邮件获取验证码成功: {code}")
+                return code
+        except Exception as e:
+            print(f"从垃圾邮件获取验证码失败: {e}")
+        
+        # 再尝试从收件箱获取
+        try:
+            code = get_INBOX_code(live_email, live_token, live_client_id)
+            if code:
+                print(f"从收件箱获取验证码成功: {code}")
+                return code
+        except Exception as e:
+            print(f"从收件箱获取验证码失败: {e}")
+        
+        # 如果没获取到验证码，等待一段时间后重试
+        if attempt < max_attempts - 1:
+            wait_time = random.uniform(3, 5)
+            print(f"等待 {wait_time:.1f} 秒后重试...")
+            time.sleep(wait_time)
+    
+    print(f"尝试 {max_attempts} 次后仍未获取到验证码")
+    return None
+
 def sign_up_account(browser, tab, live_email, live_password, live_token, live_client_id, sign_up_url):
     """注册账户流程"""
     print("\n开始注册新账户...")
@@ -95,24 +130,13 @@ def sign_up_account(browser, tab, live_email, live_password, live_token, live_cl
                 break
             if tab.ele('@data-index=0'):
                 print("准备获取验证码")
-                try:
-                    code = get_Junk_code(live_email, live_token,live_client_id)
-                    print("code:",code)
-                except Exception as e:
-                    print("报错：",e)
-                if code == None:
-                    try:
-                        code = get_INBOX_code(live_email, live_token,live_client_id)
-                        print("code:",code)
-                    except Exception as e:
-                        print("报错：",e)
-                if code:
-                    print("获取验证码成功：", code)
-                    browser.activate_tab(tab)
-                else:
+                code = get_verification_code(live_email, live_token, live_client_id)
+                
+                if not code:
                     print("获取验证码失败，程序退出")
                     return False
-
+                
+                browser.activate_tab(tab)
                 i = 0
                 for digit in code:
                     tab.ele(f'@data-index={i}').input(digit)
@@ -216,7 +240,7 @@ def main():
         browser.quit()
 
 if __name__ == "__main__":
-    repeat_times = 4  # 注册次数
+    repeat_times = 6  # 注册次数
     for i in range(repeat_times):
         try:
             print(f"\n开始第 {i+1}/{repeat_times} 次注册")
