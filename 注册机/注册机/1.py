@@ -55,41 +55,6 @@ def get_cursor_session_token(tab):
             break
     return cursor_session_token
 
-def get_verification_code(live_email, live_token, live_client_id, max_attempts=5):
-    """获取验证码，多次尝试"""
-    print("开始获取验证码")
-    code = None
-    
-    for attempt in range(max_attempts):
-        print(f"尝试 {attempt+1}/{max_attempts} 次获取验证码")
-        
-        # 先尝试从垃圾邮件获取
-        try:
-            code = get_Junk_code(live_email, live_token, live_client_id)
-            if code:
-                print(f"从垃圾邮件获取验证码成功: {code}")
-                return code
-        except Exception as e:
-            print(f"从垃圾邮件获取验证码失败: {e}")
-        
-        # 再尝试从收件箱获取
-        try:
-            code = get_INBOX_code(live_email, live_token, live_client_id)
-            if code:
-                print(f"从收件箱获取验证码成功: {code}")
-                return code
-        except Exception as e:
-            print(f"从收件箱获取验证码失败: {e}")
-        
-        # 如果没获取到验证码，等待一段时间后重试
-        if attempt < max_attempts - 1:
-            wait_time = random.uniform(3, 5)
-            print(f"等待 {wait_time:.1f} 秒后重试...")
-            time.sleep(wait_time)
-    
-    print(f"尝试 {max_attempts} 次后仍未获取到验证码")
-    return None
-
 def sign_up_account(browser, tab, live_email, live_password, live_token, live_client_id, sign_up_url):
     """注册账户流程"""
     print("\n开始注册新账户...")
@@ -130,18 +95,69 @@ def sign_up_account(browser, tab, live_email, live_password, live_token, live_cl
                 break
             if tab.ele('@data-index=0'):
                 print("准备获取验证码")
-                code = get_verification_code(live_email, live_token, live_client_id)
+                code = None
+                # 尝试从垃圾邮件和收件箱获取验证码，设置最大重试次数和等待时间
+                max_attempts = 5  # 最大尝试次数
+                base_wait_time = 3  # 基础等待时间（秒）
                 
-                if not code:
-                    print("获取验证码失败，程序退出")
-                    return False
+                for attempt in range(1, max_attempts + 1):
+                    # 先检查垃圾邮件
+                    try:
+                        print(f"第 {attempt} 次尝试获取验证码 (垃圾邮件)...")
+                        code = get_Junk_code(live_email, live_token, live_client_id)
+                        if code:
+                            print(f"在垃圾邮件中找到验证码: {code}")
+                            break
+                    except Exception as e:
+                        print(f"从垃圾邮件获取验证码出错: {e}")
+                    
+                    # 再检查收件箱
+                    try:
+                        print(f"第 {attempt} 次尝试获取验证码 (收件箱)...")
+                        code = get_INBOX_code(live_email, live_token, live_client_id)
+                        if code:
+                            print(f"在收件箱中找到验证码: {code}")
+                            break
+                    except Exception as e:
+                        print(f"从收件箱获取验证码出错: {e}")
+                    
+                    if attempt < max_attempts:
+                        # 使用递增的等待时间
+                        wait_time = base_wait_time * attempt
+                        print(f"未找到验证码，{wait_time} 秒后重试...")
+                        time.sleep(wait_time)
+                    else:
+                        print(f"已尝试 {max_attempts} 次，仍未找到验证码")
                 
-                browser.activate_tab(tab)
-                i = 0
-                for digit in code:
-                    tab.ele(f'@data-index={i}').input(digit)
-                    time.sleep(random.uniform(0.1,0.3))
-                    i += 1
+                if code:
+                    print("最终获取验证码成功：", code)
+                    browser.activate_tab(tab)
+                    
+                    i = 0
+                    for digit in code:
+                        tab.ele(f'@data-index={i}').input(digit)
+                        time.sleep(random.uniform(0.1,0.3))
+                        i += 1
+                else:
+                    print("自动获取验证码失败，请手动输入验证码")
+                    # 保持浏览器窗口活跃，等待手动输入
+                    browser.activate_tab(tab)
+                    # 等待用户手动处理
+                    print("请在浏览器中手动输入验证码，完成后按 Enter 键继续...")
+                    input("按 Enter 键继续...")
+                    # 给页面一些时间可能的跳转
+                    time.sleep(2)
+                    
+                    # 检查是否已成功验证
+                    max_check_attempts = 3
+                    for check_attempt in range(max_check_attempts):
+                        if tab.ele('Account Settings', timeout=2):
+                            print("检测到已成功手动验证")
+                            break
+                        elif check_attempt < max_check_attempts - 1:
+                            print(f"未检测到验证成功，继续等待... ({check_attempt + 1}/{max_check_attempts})")
+                            time.sleep(2)
+                    
                 break
         except Exception as e:
             print(e)
@@ -158,31 +174,16 @@ def main():
     # 配置信息
     sign_up_url = 'https://authenticator.cursor.sh'
     
-    # 初始化browser为None，以便在发生错误时可以检查
-    browser = None
-    
     try:
         with open('email.txt', 'r') as f:
             line = f.readline().strip()
             if not line:
                 print("email.txt 文件为空")
-                return
             # 解析邮箱、密码和token
-            parts = line.split('----')
-            if len(parts) < 3:
-                print("email.txt 格式错误，无法正确解析")
-                return
-            
-            live_email = parts[0]
-            live_password = parts[1]
-            live_token = parts[2]
-            
-            # 从token中提取client_id (user_id部分)
-            try:
-                live_client_id = live_token.split('::')[0]  # 提取user_开头的部分作为client_id
-            except:
-                live_client_id = "default_client_id"  # 默认值
-            
+            live_email = line.split('----')[0]
+            live_password = line.split('----')[1]
+            live_token = line.split('----')[2]
+            live_client_id = line.split('----')[3]
             # 删除已使用的账号
             with open('email.txt', 'r') as f:
                 lines = f.readlines()
@@ -196,9 +197,7 @@ def main():
         return
     except Exception as e:
         print(f"读取文件时发生错误: {str(e)}")
-        # 确保如果browser已经创建，则关闭它
-        if browser is not None:
-            browser.quit()
+        browser.quit()
         return
     
     # 浏览器配置
@@ -227,20 +226,17 @@ def main():
         else:
             print("账号注册失败")
             with open('email.txt', 'a', encoding='utf-8') as f:
-                f.write(f"{live_email}----{live_password}----{live_token}\n")
+                f.write(f"{live_email}----{live_password}----{live_client_id}----{live_token}\n")
     else:
         print("账号注册失败")
         with open('email.txt', 'a', encoding='utf-8') as f:
-            f.write(f"{live_email}----{live_password}----{live_token}\n")
-        if browser is not None:
-            browser.quit()
-    
-    # 确保浏览器被关闭
-    if browser is not None:
+            f.write(f"{live_email}----{live_password}----{live_client_id}----{live_token}\n")
         browser.quit()
+    browser.quit()    
+
 
 if __name__ == "__main__":
-    repeat_times = 6  # 注册次数
+    repeat_times = 4  # 注册次数
     for i in range(repeat_times):
         try:
             print(f"\n开始第 {i+1}/{repeat_times} 次注册")
