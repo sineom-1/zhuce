@@ -173,17 +173,25 @@ def sign_up_account(browser, tab, live_email, live_password, live_token, live_cl
 def main():
     # 配置信息
     sign_up_url = 'https://authenticator.cursor.sh'
+    browser = None
     
     try:
         with open('email.txt', 'r') as f:
             line = f.readline().strip()
             if not line:
                 print("email.txt 文件为空")
+                return False
             # 解析邮箱、密码和token
-            live_email = line.split('----')[0]
-            live_password = line.split('----')[1]
-            live_token = line.split('----')[2]
-            live_client_id = line.split('----')[3]
+            parts = line.split('----')
+            if len(parts) < 4:
+                print("email.txt 文件格式错误，需要邮箱----密码----token----client_id格式")
+                return False
+                
+            live_email = parts[0]
+            live_password = parts[1]
+            live_token = parts[2]
+            live_client_id = parts[3]
+            
             # 删除已使用的账号
             with open('email.txt', 'r') as f:
                 lines = f.readlines()
@@ -194,53 +202,84 @@ def main():
             
     except FileNotFoundError:
         print("找不到 email.txt 文件")
-        return
+        return False
     except Exception as e:
         print(f"读取文件时发生错误: {str(e)}")
-        browser.quit()
-        return
+        if browser:
+            browser.quit()
+        return False
     
-    # 浏览器配置
-    co = ChromiumOptions()
-    co.add_extension("turnstilePatch")
-    co.set_pref('credentials_enable_service', False)
-    co.set_argument('--hide-crash-restore-bubble') 
-    co.incognito(True)
-    co.auto_port(True)
-    co.use_system_user_path()
-    # 设置代理
-    #co.set_proxy(http='http://111.180.198.68:1900')
+    try:
+        # 浏览器配置
+        co = ChromiumOptions()
+        co.add_extension("turnstilePatch")
+        co.set_pref('credentials_enable_service', False)
+        co.set_argument('--hide-crash-restore-bubble') 
+        co.incognito(True)
+        co.auto_port(True)
+        co.use_system_user_path()
+        # 设置代理
+        #co.set_proxy(http='http://111.180.198.68:1900')
 
-    browser = Chromium(co)
-    tab = browser.latest_tab
-    tab.run_js("try { turnstile.reset() } catch(e) { }")
+        browser = Chromium(co)
+        tab = browser.latest_tab
+        tab.run_js("try { turnstile.reset() } catch(e) { }")
 
-    if sign_up_account(browser, tab, live_email, live_password, live_token, live_client_id, sign_up_url):
-        time.sleep(1)
-        token = get_cursor_session_token(tab)
-        if token!=None:
-            os.makedirs('output', exist_ok=True)
-            with open('output/cursor_accounts.txt', 'a', encoding='utf-8') as f:
-                f.write(f"{live_email}----{live_password}----{token}\n")
-            print("账户注册成功")
+        if sign_up_account(browser, tab, live_email, live_password, live_token, live_client_id, sign_up_url):
+            time.sleep(1)
+            token = get_cursor_session_token(tab)
+            if token!=None:
+                os.makedirs('output', exist_ok=True)
+                with open('output/cursor_accounts.txt', 'a', encoding='utf-8') as f:
+                    f.write(f"{live_email}----{live_password}----{token}\n")
+                print("账户注册成功")
+                result = True
+            else:
+                print("获取token失败")
+                with open('email.txt', 'a', encoding='utf-8') as f:
+                    f.write(f"{live_email}----{live_password}----{live_token}----{live_client_id}\n")
+                result = False
         else:
             print("账号注册失败")
             with open('email.txt', 'a', encoding='utf-8') as f:
-                f.write(f"{live_email}----{live_password}----{live_client_id}----{live_token}\n")
-    else:
-        print("账号注册失败")
+                f.write(f"{live_email}----{live_password}----{live_token}----{live_client_id}\n")
+            result = False
+    except Exception as e:
+        print(f"注册过程中发生错误: {str(e)}")
         with open('email.txt', 'a', encoding='utf-8') as f:
-            f.write(f"{live_email}----{live_password}----{live_client_id}----{live_token}\n")
-        browser.quit()
-    browser.quit()    
+            f.write(f"{live_email}----{live_password}----{live_token}----{live_client_id}\n")
+        result = False
+    finally:
+        if browser:
+            try:
+                browser.quit()
+            except:
+                pass
+    
+    return result
 
 
 if __name__ == "__main__":
-    repeat_times = 4  # 注册次数
+    repeat_times = 5  # 注册次数
+    success_count = 0
+    
     for i in range(repeat_times):
         try:
             print(f"\n开始第 {i+1}/{repeat_times} 次注册")
-            main()
+            if main():
+                success_count += 1
+                print(f"成功注册: {success_count}/{i+1} 次尝试")
+            else:
+                print(f"注册失败，继续下一次尝试")
+            
+            # 在注册之间添加随机等待时间，避免被检测为机器人
+            if i < repeat_times - 1:
+                wait_time = random.uniform(2, 5)
+                print(f"等待 {wait_time:.1f} 秒后开始下一次注册...")
+                time.sleep(wait_time)
+                
         except Exception as e:
-            print(f"发生错误: {e}")
+            print(f"发生错误: {str(e)}")
             continue
+    
+    print(f"\n注册完成，共完成 {success_count}/{repeat_times} 次注册")
