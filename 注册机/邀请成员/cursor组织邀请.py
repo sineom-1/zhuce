@@ -2,7 +2,7 @@
 Author: sineom sineom@126.com
 Date: 2025-03-27 02:06:20
 LastEditors: sineom sineom@126.com
-LastEditTime: 2025-04-08 09:10:45
+LastEditTime: 2025-04-08 16:48:14
 FilePath: /邀请成员/cursor组织邀请.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -12,7 +12,7 @@ import json
 from tqdm import tqdm
 
 # 设置邀请代码
-invite_code = "00a1d6488811e18472a10ea5e795a5e8a50edb9ab8b22717"
+invite_code = "48c74a841ef92eb0b609739fb1dc3bc7ded8f0918fa4bc57"
 
 # 读取cookies.txt文件
 with open('cookies.txt', 'r') as file:
