@@ -2,7 +2,7 @@
 Author: sineom sineom@126.com
 Date: 2025-03-27 02:06:20
 LastEditors: sineom sineom@126.com
-LastEditTime: 2025-04-15 17:25:12
+LastEditTime: 2025-04-16 00:38:15
 FilePath: /邀请成员/cursor组织邀请.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -13,7 +13,7 @@ import json
 from tqdm import tqdm
 
 # 设置邀请代码
-invite_code = "2ef477fc959671fa7e865c130253cbca759d533b59266016"
+invite_code = "2c69a2d49b78128d0987d8cf86bf172547d7d0dcd0cb5058"
 
 user_agent = [
 "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36 OPR/26.0.1656.60",
@@ -52,7 +52,7 @@ async def send_request(session, semaphore, cookie):
             'sec-fetch-mode': 'cors',
             'sec-fetch-dest': 'empty',
             'referer': f'https://www.cursor.com/team/accept-invite?code={invite_code}',
-            'accept-language': 'fr-CA,CA;q=0.9,en;q=0.8,fr-CA;q=0.7,cs;q=0.6,fr;q=0.5,no;q=0.4,it;q=0.3',
+            'accept-language': 'zh-TW,zh;q=0.9,en;q=0.8,zh-TW;q=0.7,cs;q=0.6,fr;q=0.5,no;q=0.4,it;q=0.3',
             'priority': 'u=1, i',
             'Cookie': f'WorkosCursorSessionToken={cookie}'
         }
