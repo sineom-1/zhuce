@@ -2,7 +2,7 @@
 Author: sineom sineom@126.com
 Date: 2025-03-27 02:06:20
 LastEditors: sineom sineom@126.com
-LastEditTime: 2025-04-16 00:38:15
+LastEditTime: 2025-04-16 17:06:24
 FilePath: /邀请成员/cursor组织邀请.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -13,24 +13,8 @@ import json
 from tqdm import tqdm
 
 # 设置邀请代码
-invite_code = "2c69a2d49b78128d0987d8cf86bf172547d7d0dcd0cb5058"
+invite_code = "4256f089096fc8263768312847a9807585436f79a1d9cf78"
 
-user_agent = [
-"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36 OPR/26.0.1656.60",
-"MAC：Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36",
-"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36",
-"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11",
-"Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.133 Safari/534.16",
-"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11",
-"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36",
-"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.11 TaoBrowser/2.0 Safari/536.11",
-"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.71 Safari/537.1 LBBROWSER",
-"Mozilla/5.0 (Windows NT 5.1) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.84 Safari/535.11 SE 2.X MetaSr 1.0",
-"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Maxthon/4.4.3.4000 Chrome/30.0.1599.101 Safari/537.36",
-"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11",
-"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 UBrowser/4.0.3214.0 Safari/537.36",
-"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 UBrowser/6.2.4094.1 Safari/537.36",
-]
 # 读取cookies.txt文件
 with open('cookies.txt', 'r') as file:
     cookies = file.readlines()
@@ -41,7 +25,7 @@ async def send_request(session, semaphore, cookie):
         cookie = cookie.strip()  # 去除换行符和空格
         # 设置请求头
         headers = {
-            'User-Agent': random.choice(user_agent),
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36',
             'Accept-Encoding': 'gzip, deflate, br, zstd',
             'Content-Type': 'application/json',
             'sec-ch-ua-platform': '"Windows"',
@@ -52,7 +36,7 @@ async def send_request(session, semaphore, cookie):
             'sec-fetch-mode': 'cors',
             'sec-fetch-dest': 'empty',
             'referer': f'https://www.cursor.com/team/accept-invite?code={invite_code}',
-            'accept-language': 'zh-TW,zh;q=0.9,en;q=0.8,zh-TW;q=0.7,cs;q=0.6,fr;q=0.5,no;q=0.4,it;q=0.3',
+            'accept-language': 'de_AT,AT;q=0.9,en;q=0.8,de_AT;q=0.7,cs;q=0.6,fr;q=0.5,no;q=0.4,it;q=0.3',
             'priority': 'u=1, i',
             'Cookie': f'WorkosCursorSessionToken={cookie}'
         }
