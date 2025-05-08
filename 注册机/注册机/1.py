@@ -260,7 +260,7 @@ def main():
 
 
 if __name__ == "__main__":
-    repeat_times = 5  # 注册次数
+    repeat_times = 9  # 注册次数
     success_count = 0
     
     for i in range(repeat_times):
