@@ -2,7 +2,7 @@
 Author: sineom sineom@126.com
 Date: 2025-03-27 02:06:20
 LastEditors: sineom sineom@126.com
-LastEditTime: 2025-05-06 06:13:51
+LastEditTime: 2025-05-09 13:42:26
 FilePath: /邀请成员/cursor组织邀请.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -15,7 +15,7 @@ import requests
 import concurrent.futures
 
 # 设置邀请代码
-invite_code = "355ffb41a5ad35f965a9293e32a143b36e75ff016532c562"
+invite_code = "e35a456c047071091c3b86f714cd7f4880883228ac599b11"
 
 # 读取cookies.txt文件
 with open('cookies.txt', 'r') as file:
