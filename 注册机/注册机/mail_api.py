@@ -1,3 +1,11 @@
+'''
+Author: sineom sineom@126.com
+Date: 2025-03-28 23:26:40
+LastEditors: sineom sineom@126.com
+LastEditTime: 2025-05-28 23:09:59
+FilePath: /zhuce/注册机/注册机/mail_api.py
+Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+'''
 import requests
 import re
 
@@ -47,8 +55,8 @@ def get_Junk_code(email, access_token,client_id):
     
 
 if __name__ == "__main__":
-    email = "akioocoyuu739@hotmail.com"
-    access_token = "M.C545_BAY.0.U.-Cp*X2wf9YxEf3Sb00R4DuTICLGxcn!83zRirznpQHaf!k!pNyTqFpyD9eC0vbijwLU0QKfFsDzweiq!sOGIF7GTbgnWnlUcWx23ZC*ilX1On*e8fieLVuJZDdbRZdC7MsIU9B*q2qsKGmXlTBq3LakS445N8UtmseSPUXNWsz4gYTiKNR3xkOM6iLadGYKsLRCy5BlgZuLXRks8nh3DNaWb0JNTM3kD6edQN8lBbx2hMrmXJ!l7w4a1V9xwFJQZCrXbp4qCU5aYgll5JS3kJfMNXmLi2dj18ZNxxFaWyKoxhWQM*K9tbEMb!dXUsFevD8u2OmIfczkxwmivbXVdmUnK!*Bcj2im6hhCmLEE!bJLt*IoRsprj1eV4r7FQz1ZedVs9tHlsa*lvzjfwUSXY1kuETghgQZ1WPwdVf6cgU9L*"
-    client_id = "8b4ba9dd-3ea5-4e5f-86f1-ddba2230dcf2"
+    email = "jamesreeseyxek@outlook.com"
+    access_token = "M.C543_SN1.0.U.-Ckt65NDWel!bZDKnWl8FDDeOerrnis21hXeiMbgWFzYUo*Vys!Fv1LfyeSgtyLay9EMQCs3G*1!yBh0TyIgyuUJ1Vln8x*W2OqrL9YVQ4rY6GB6yD0SKR!6H1ZuAJuib8oGtXbJTzejCWnGBhn5i3jR0xCoNq!CoTnBBoEHzhs2*!VcHriuLWAQ8DoxUJYBMOFGMgzpl1kUJkwBRjdUcmF7wNjGd!Gl!wqG!IYEiF8b5SFb02x57ikLF!zEau!cQ3C4XTbcjblaX!twlIBFWwOBRPW5RPmYwEMH5X0Vn9cTRwGlo*sSMJDVJTGH3LIQ9kGCmAsusmEOGANM69akbilDP6HPTnNzXOI*KyBFwNuVbHUAiT40ggqtGBaYYL!Gpdyh*75uEIBvsMTbeBjj4kmd9*Vui*vyM5LDwPPwzn*ne!jHJnKwWC31ZdrG9rxgS1g$$"
+    client_id = "9e5f94bc-e8a4-4e73-b8be-63364c29d753"
     print(get_Junk_code(email, access_token,client_id))
     print(get_INBOX_code(email, access_token,client_id))
