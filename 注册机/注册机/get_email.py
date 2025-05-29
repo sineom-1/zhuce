@@ -2,7 +2,7 @@
 Author: sineom sineom@126.com
 Date: 2025-05-29 14:00:07
 LastEditors: sineom sineom@126.com
-LastEditTime: 2025-05-29 14:13:01
+LastEditTime: 2025-05-29 21:27:24
 FilePath: /cursorX项目/注册机/注册机/get_email.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -64,10 +64,10 @@ def connect_imap(email, access_token):
     mail.logout()
 
 # 设置电子邮件地址和刷新令牌  
-#### laurencampbelljqb3106@outlook.com----x----M.C558_SN1.0.U.-CpzrirbvNqGOvFvurLV!vmyKCxQUwv1qGsIoPt93Lv582HXsY3NOuKSoLaO2*1zY68No8Zp88xSv9c98ATxqwD4tjmLUNRpHx4sgMYZxe*r43FBNGyvH*Nomgc7WXguejfFpFHAnqGHvzodI!yG3lTu*zxOxaQpW16*U1fyzaZVpNN3d3!fxTN1Rjt6fhYYqX!Q1DGrTA49NE0B7*g8Loxm9qoZRlrLRmmStNecZ2xd6nT2hfJDLw*NbXSu450!TBkeQ0oEelWDYspe2NqHmg78mgUo7HjR!XYsqwMUZ7a2B8JEjogKKncQjSqxiNFWbMDiVl*ULfciJf*52AxZOn174J4fNk5YzxAMr4rJnAofdIP2M4*ZuU3EAaCkMJiqtFHGLcd6E9k51ZT4FbCl4pw!OmBC8HFAb9!a6Sxd1dYe9----9e5f94bc-e8a4-4e73-b8be-63364c29d753
-client_id = '9e5f94bc-e8a4-4e73-b8be-63364c29d753'
-email = "laurencampbelljqb3106@outlook.com"
-t = "M.C558_SN1.0.U.-CpzrirbvNqGOvFvurLV!vmyKCxQUwv1qGsIoPt93Lv582HXsY3NOuKSoLaO2*1zY68No8Zp88xSv9c98ATxqwD4tjmLUNRpHx4sgMYZxe*r43FBNGyvH*Nomgc7WXguejfFpFHAnqGHvzodI!yG3lTu*zxOxaQpW16*U1fyzaZVpNN3d3!fxTN1Rjt6fhYYqX!Q1DGrTA49NE0B7*g8Loxm9qoZRlrLRmmStNecZ2xd6nT2hfJDLw*NbXSu450!TBkeQ0oEelWDYspe2NqHmg78mgUo7HjR!XYsqwMUZ7a2B8JEjogKKncQjSqxiNFWbMDiVl*ULfciJf*52AxZOn174J4fNk5YzxAMr4rJnAofdIP2M4*ZuU3EAaCkMJiqtFHGLcd6E9k51ZT4FbCl4pw!OmBC8HFAb9!a6Sxd1dYe9"
+#### lisarodriguezrojr8961@outlook.com----x----user_01JWAHMG050GYV6CJVD1ZHB65R%3A%3AeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhdXRoMHx1c2VyXzAxSldBSE1HMDUwR1lWNkNKVkQxWkhCNjVSIiwidGltZSI6IjE3NDg0MDU3NzIiLCJyYW5kb21uZXNzIjoiYmYxNDFhYWItY2ExYy00NWVhIiwiZXhwIjoxNzQ4NDExMTcyLCJpc3MiOiJodHRwczovL2F1dGhlbnRpY2F0aW9uLmN1cnNvci5zaCIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwgb2ZmbGluZV9hY2Nlc3MiLCJhdWQiOiJodHRwczovL2N1cnNvci5jb20iLCJ0eXBlIjoid2ViIn0.HS1OqVbH0Sv7vJH-YoxYLDniSd4Q5zNq21_HR7xVjHQ
+client_id = '9e5f94bc-e8a4-4e73-b8be-63364c29d753'      
+email = "lisarodriguezrojr8961@outlook.com"
+t = "M.C558_SN1.0.U.-CmlyzMoucHY4byahX0w7C5xkSd0KKkHAd0yWWPh1nNaHwfI*yN3rzLQyl!j6oqAhnbp7Iq0mZjofaqapnq*ZonaZcCb4UIxlFU*8RjKySI5*yyF3ZnV9w8hQrryi*UuBeIjQs0gl*K2KfpGEGwDVuVaJZVKZnJ0rc2nx232omsViVt*sEys4ZM4RJ59QhnsGzTzUNgeXgveMEKRN7OYiGO3DKvrNZT62ni6qRszn0rTi0bHoc7apmgcEKpeBFcegZqED*wgsLV7yYG4epgWqnVNzj8JEJlUA2NS03xmqOKZKO*csxA*LxM*07Pn3LSxyVrRhxqOKsxqNOgsAII7VTbAsi58izeQQ5yRxYas*Q3R2rTwnV2pcaDSaFcQtEb1VLtNRwLI4!zfw8zSo1tcXNPFA*tVz97IvSvikO4nZDYXH"
 
 # 使用刷新令牌获取访问令牌
 acc_token = get_access_token(client_id, t)

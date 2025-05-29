@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邮箱列表 - 邮件客户端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+        }
+
+        .mailbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .mailbox-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .mailbox-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+
+        .mailbox-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .mailbox-email {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            word-break: break-all;
+        }
+
+        .mailbox-id {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .mailbox-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-1px);
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-top: 50px;
+        }
+
+        .error {
+            background: #ff4757;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .stats {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .refresh-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.1);
+            background: #5a6fd8;
+        }
+
+        @media (max-width: 768px) {
+            .mailbox-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📧 邮箱管理中心</h1>
+            <p>选择一个邮箱账户查看邮件</p>
+        </div>
+
+        <div class="stats" id="stats" style="display: none;">
+            <strong>共找到 <span id="mailbox-count">0</span> 个邮箱账户</strong>
+        </div>
+
+        <div class="loading" id="loading">
+            正在加载邮箱列表...
+        </div>
+
+        <div class="error" id="error" style="display: none;">
+        </div>
+
+        <div class="mailbox-grid" id="mailbox-grid">
+        </div>
+
+        <div class="empty-state" id="empty-state" style="display: none;">
+            <h3>😔 暂无邮箱账户</h3>
+            <p>请检查 email.txt 文件是否存在且格式正确</p>
+        </div>
+    </div>
+
+    <button class="refresh-btn" onclick="loadMailboxes()" title="刷新列表">
+        🔄
+    </button>
+
+    <script>
+        let mailboxes = [];
+
+        function getEmailInitial(email) {
+            return email.charAt(0).toUpperCase();
+        }
+
+        function createMailboxCard(mailbox) {
+            return `
+                <div class="mailbox-card" onclick="openMailbox(${mailbox.id})">
+                    <div class="mailbox-avatar">
+                        ${getEmailInitial(mailbox.email)}
+                    </div>
+                    <div class="mailbox-email">${mailbox.email}</div>
+                    <div class="mailbox-id">ID: ${mailbox.id}</div>
+                    <div class="mailbox-actions">
+                        <a href="/mailbox/${mailbox.id}" class="btn btn-primary">
+                            查看邮件
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openMailbox(mailboxId) {
+            window.location.href = `/mailbox/${mailboxId}`;
+        }
+
+        async function loadMailboxes() {
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const grid = document.getElementById('mailbox-grid');
+            const emptyState = document.getElementById('empty-state');
+            const stats = document.getElementById('stats');
+
+            // 显示加载状态
+            loading.style.display = 'block';
+            error.style.display = 'none';
+            grid.innerHTML = '';
+            emptyState.style.display = 'none';
+            stats.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/mailboxes');
+                const data = await response.json();
+
+                loading.style.display = 'none';
+
+                if (data.success) {
+                    mailboxes = data.mailboxes;
+                    
+                    if (mailboxes.length === 0) {
+                        emptyState.style.display = 'block';
+                    } else {
+                        stats.style.display = 'block';
+                        document.getElementById('mailbox-count').textContent = mailboxes.length;
+                        
+                        grid.innerHTML = mailboxes.map(createMailboxCard).join('');
+                    }
+                } else {
+                    error.textContent = `加载失败: ${data.error}`;
+                    error.style.display = 'block';
+                }
+            } catch (err) {
+                loading.style.display = 'none';
+                error.textContent = `网络错误: ${err.message}`;
+                error.style.display = 'block';
+            }
+        }
+
+        // 页面加载时获取邮箱列表
+        document.addEventListener('DOMContentLoaded', loadMailboxes);
+    </script>
+</body>
+</html> 

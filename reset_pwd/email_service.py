@@ -10,13 +10,59 @@ from email.header import decode_header
 import re
 from datetime import datetime
 import json
+import os
 
 class EmailService:
-    def __init__(self, client_id, email_address, refresh_token):
+    def __init__(self, client_id=None, email_address=None, refresh_token=None):
         self.client_id = client_id
         self.email_address = email_address
         self.refresh_token = refresh_token
         self.access_token = None
+        
+    @staticmethod
+    def load_email_accounts():
+        """从email.txt文件加载所有邮箱账户"""
+        accounts = []
+        email_file_path = os.path.join(os.path.dirname(__file__), 'email.txt')
+        
+        try:
+            with open(email_file_path, 'r', encoding='utf-8') as file:
+                for line_num, line in enumerate(file, 1):
+                    line = line.strip()
+                    if not line:
+                        continue
+                        
+                    # 解析格式: email----x----refresh_token----client_id
+                    parts = line.split('----')
+                    if len(parts) >= 4:
+                        email_addr = parts[0]
+                        refresh_token = parts[2]
+                        client_id = parts[3]
+                        
+                        accounts.append({
+                            'id': line_num,
+                            'email': email_addr,
+                            'refresh_token': refresh_token,
+                            'client_id': client_id
+                        })
+                    else:
+                        print(f"跳过格式错误的行 {line_num}: {line}")
+                        
+        except FileNotFoundError:
+            print("email.txt 文件未找到")
+        except Exception as e:
+            print(f"读取邮箱账户失败: {e}")
+            
+        return accounts
+    
+    @classmethod
+    def create_for_account(cls, account_info):
+        """为特定邮箱账户创建EmailService实例"""
+        return cls(
+            client_id=account_info['client_id'],
+            email_address=account_info['email'],
+            refresh_token=account_info['refresh_token']
+        )
         
     def get_access_token(self):
         """获取访问令牌"""

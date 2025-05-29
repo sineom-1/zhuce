@@ -3,7 +3,7 @@
 邮件服务测试脚本
 """
 
-from email_service import EmailService
+from reset_pwd.email_service import EmailService
 
 def test_email_service():
     """测试邮件服务功能"""

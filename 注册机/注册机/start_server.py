@@ -74,7 +74,7 @@ def main():
     
     # 启动Flask应用
     try:
-        from app import app
+        from reset_pwd.app import app
         app.run(debug=True, host='0.0.0.0', port=port)
     except KeyboardInterrupt:
         print("\n👋 服务器已停止")

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邮件列表 - 邮件客户端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-2px);
+        }
+
+        .mailbox-info {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stats {
+            color: white;
+            font-size: 1rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .email-list {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .email-item {
+            border-bottom: 1px solid #eee;
+            padding: 20px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .email-item:last-child {
+            border-bottom: none;
+        }
+
+        .email-item:hover {
+            background: #f8f9ff;
+            transform: translateX(5px);
+        }
+
+        .email-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            gap: 15px;
+        }
+
+        .email-subject {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+            flex: 1;
+        }
+
+        .email-date {
+            font-size: 0.9rem;
+            color: #666;
+            white-space: nowrap;
+        }
+
+        .email-sender {
+            font-size: 0.9rem;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .email-preview {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            max-height: 2.8em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .email-id {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #667eea;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 3px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .email-item:hover .email-id {
+            opacity: 1;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-top: 50px;
+        }
+
+        .error {
+            background: #ff4757;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #666;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .refresh-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.1);
+            background: #5a6fd8;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .stats {
+                text-align: center;
+            }
+            
+            .actions {
+                justify-content: center;
+            }
+            
+            .email-header {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .email-date {
+                align-self: flex-end;
+            }
+            
+            .container {
+                padding: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <a href="/" class="back-btn">← 返回</a>
+                📬 邮件列表
+            </h1>
+            <div class="mailbox-info" id="mailbox-info">
+                正在加载邮箱信息...
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="stats" id="stats">
+                正在加载邮件统计...
+            </div>
+            <div class="actions">
+                <button class="btn btn-secondary" onclick="loadEmails()">
+                    🔄 刷新
+                </button>
+                <select id="limit-select" class="btn btn-secondary" onchange="loadEmails()">
+                    <option value="20">显示 20 封</option>
+                    <option value="50" selected>显示 50 封</option>
+                    <option value="100">显示 100 封</option>
+                    <option value="200">显示 200 封</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">
+            正在加载邮件列表...
+        </div>
+
+        <div class="error" id="error" style="display: none;">
+        </div>
+
+        <div class="email-list" id="email-list" style="display: none;">
+        </div>
+
+        <div class="empty-state" id="empty-state" style="display: none;">
+            <h3>📭 邮箱为空</h3>
+            <p>此邮箱暂无邮件</p>
+        </div>
+    </div>
+
+    <button class="refresh-btn" onclick="loadEmails()" title="刷新邮件">
+        🔄
+    </button>
+
+    <script>
+        const mailboxId = {{ mailbox_id }};
+        let emails = [];
+        let currentMailbox = null;
+
+        function formatDate(dateStr) {
+            try {
+                const date = new Date(dateStr);
+                const now = new Date();
+                const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 0) {
+                    return date.toLocaleTimeString('zh-CN', {hour: '2-digit', minute: '2-digit'});
+                } else if (diffDays === 1) {
+                    return '昨天';
+                } else if (diffDays < 7) {
+                    return `${diffDays}天前`;
+                } else {
+                    return date.toLocaleDateString('zh-CN');
+                }
+            } catch (e) {
+                return dateStr;
+            }
+        }
+
+        function truncateText(text, maxLength = 100) {
+            if (!text) return '';
+            return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+        }
+
+        function createEmailItem(email) {
+            return `
+                <div class="email-item" onclick="openEmail(${email.id})">
+                    <div class="email-id">#${email.id}</div>
+                    <div class="email-header">
+                        <div style="flex: 1;">
+                            <div class="email-subject">${email.subject || '(无主题)'}</div>
+                            <div class="email-sender">${email.sender}</div>
+                        </div>
+                        <div class="email-date">${formatDate(email.date)}</div>
+                    </div>
+                    <div class="email-preview">${truncateText(email.preview)}</div>
+                </div>
+            `;
+        }
+
+        function openEmail(emailId) {
+            window.location.href = `/mailbox/${mailboxId}/email/${emailId}`;
+        }
+
+        async function loadEmails() {
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const emailList = document.getElementById('email-list');
+            const emptyState = document.getElementById('empty-state');
+            const stats = document.getElementById('stats');
+            const mailboxInfo = document.getElementById('mailbox-info');
+            const limitSelect = document.getElementById('limit-select');
+
+            // 显示加载状态
+            loading.style.display = 'block';
+            error.style.display = 'none';
+            emailList.style.display = 'none';
+            emptyState.style.display = 'none';
+
+            try {
+                const limit = limitSelect.value;
+                const response = await fetch(`/api/mailbox/${mailboxId}/emails?limit=${limit}`);
+                const data = await response.json();
+
+                loading.style.display = 'none';
+
+                if (data.success) {
+                    emails = data.emails;
+                    currentMailbox = data.mailbox;
+                    
+                    // 更新邮箱信息
+                    mailboxInfo.textContent = `📧 ${currentMailbox.email}`;
+                    
+                    // 更新统计信息
+                    stats.textContent = `共 ${emails.length} 封邮件`;
+                    
+                    if (emails.length === 0) {
+                        emptyState.style.display = 'block';
+                    } else {
+                        emailList.style.display = 'block';
+                        emailList.innerHTML = emails.map(createEmailItem).join('');
+                    }
+                } else {
+                    error.textContent = `加载失败: ${data.error}`;
+                    error.style.display = 'block';
+                }
+            } catch (err) {
+                loading.style.display = 'none';
+                error.textContent = `网络错误: ${err.message}`;
+                error.style.display = 'block';
+            }
+        }
+
+        // 页面加载时获取邮件列表
+        document.addEventListener('DOMContentLoaded', loadEmails);
+    </script>
+</body>
+</html> 
