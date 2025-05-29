@@ -2,7 +2,7 @@
 Author: sineom sineom@126.com
 Date: 2025-03-28 23:26:40
 LastEditors: sineom sineom@126.com
-LastEditTime: 2025-05-28 23:09:59
+LastEditTime: 2025-05-29 13:55:31
 FilePath: /zhuce/注册机/注册机/mail_api.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -55,8 +55,9 @@ def get_Junk_code(email, access_token,client_id):
     
 
 if __name__ == "__main__":
-    email = "jamesreeseyxek@outlook.com"
-    access_token = "M.C543_SN1.0.U.-Ckt65NDWel!bZDKnWl8FDDeOerrnis21hXeiMbgWFzYUo*Vys!Fv1LfyeSgtyLay9EMQCs3G*1!yBh0TyIgyuUJ1Vln8x*W2OqrL9YVQ4rY6GB6yD0SKR!6H1ZuAJuib8oGtXbJTzejCWnGBhn5i3jR0xCoNq!CoTnBBoEHzhs2*!VcHriuLWAQ8DoxUJYBMOFGMgzpl1kUJkwBRjdUcmF7wNjGd!Gl!wqG!IYEiF8b5SFb02x57ikLF!zEau!cQ3C4XTbcjblaX!twlIBFWwOBRPW5RPmYwEMH5X0Vn9cTRwGlo*sSMJDVJTGH3LIQ9kGCmAsusmEOGANM69akbilDP6HPTnNzXOI*KyBFwNuVbHUAiT40ggqtGBaYYL!Gpdyh*75uEIBvsMTbeBjj4kmd9*Vui*vyM5LDwPPwzn*ne!jHJnKwWC31ZdrG9rxgS1g$$"
-    client_id = "9e5f94bc-e8a4-4e73-b8be-63364c29d753"
+    ### laurencampbelljqb3106@outlook.com----x----M.C558_SN1.0.U.-CpzrirbvNqGOvFvurLV!vmyKCxQUwv1qGsIoPt93Lv582HXsY3NOuKSoLaO2*1zY68No8Zp88xSv9c98ATxqwD4tjmLUNRpHx4sgMYZxe*r43FBNGyvH*Nomgc7WXguejfFpFHAnqGHvzodI!yG3lTu*zxOxaQpW16*U1fyzaZVpNN3d3!fxTN1Rjt6fhYYqX!Q1DGrTA49NE0B7*g8Loxm9qoZRlrLRmmStNecZ2xd6nT2hfJDLw*NbXSu450!TBkeQ0oEelWDYspe2NqHmg78mgUo7HjR!XYsqwMUZ7a2B8JEjogKKncQjSqxiNFWbMDiVl*ULfciJf*52AxZOn174J4fNk5YzxAMr4rJnAofdIP2M4*ZuU3EAaCkMJiqtFHGLcd6E9k51ZT4FbCl4pw!OmBC8HFAb9!a6Sxd1dYe9----9e5f94bc-e8a4-4e73-b8be-63364c29d753
+    email = "laurencampbelljqb3106@outlook.com"
+    access_token = "M.C558_SN1.0.U.-CpzrirbvNqGOvFvurLV!vmyKCxQUwv1qGsIoPt93Lv582HXsY3NOuKSoLaO2*1zY68No8Zp88xSv9c98ATxqwD4tjmLUNRpHx4sgMYZxe*r43FBNGyvH*Nomgc7WXguejfFpFHAnqGHvzodI!yG3lTu*zxOxaQpW16*U1fyzaZVpNN3d3!fxTN1Rjt6fhYYqX!Q1DGrTA49NE0B7*g8Loxm9qoZRlrLRmmStNecZ2xd6nT2hfJDLw*NbXSu450!TBkeQ0oEelWDYspe2NqHmg78mgUo7HjR!XYsqwMUZ7a2B8JEjogKKncQjSqxiNFWbMDiVl*ULfciJf*52AxZOn174J4fNk5YzxAMr4rJnAofdIP2M4*ZuU3EAaCkMJiqtFHGLcd6E9k51ZT4FbCl4pw!OmBC8HFAb9!a6Sxd1dYe9"
+    client_id = "9e5f94bc-e8a4-4e73-b8be-63364c29d753" 
     print(get_Junk_code(email, access_token,client_id))
     print(get_INBOX_code(email, access_token,client_id))
