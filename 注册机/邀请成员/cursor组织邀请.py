@@ -2,7 +2,7 @@
 Author: sineom sineom@126.com
 Date: 2025-03-27 02:06:20
 LastEditors: sineom sineom@126.com
-LastEditTime: 2025-05-30 16:00:40
+LastEditTime: 2025-05-31 22:53:36
 FilePath: /邀请成员/cursor组织邀请.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -15,7 +15,7 @@ import requests
 import concurrent.futures
 
 # 设置邀请代码
-invite_code = "404ef1b3df7c5673274369bc921d320a473ae11367304a93"
+invite_code = "088b213a28ca3b1be9ba704ba31d1d1342d32e21e92a3ce3"
 
 # 读取cookies.txt文件
 with open('cookies.txt', 'r') as file:
@@ -82,7 +82,7 @@ def main(concurrency):
 # Run the main function
 if __name__ == "__main__":
     try:
-        concurrency = 60  # Set default concurrency level
+        concurrency = 120  # Set default concurrency level
         main(concurrency)
     except Exception as e:
         print(f"发生错误: {e}")
